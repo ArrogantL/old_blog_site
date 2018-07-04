@@ -304,20 +304,16 @@
       
         
           
-            <p>scanner错误关闭导致的异常<br>public class test2 {</p>
-<p>  public static void main(String[] args) {<br>    Scanner scanner1 = new Scanner(System.in);<br>    System.out.println(“run scanner1.close()”);<br>    scanner1.close();</p>
-<pre><code>Scanner scanner2 = new Scanner(System.in);
-System.out.println(&quot;run scanner2.nextLine()&quot;);
-scanner2.nextLine();
-</code></pre><p>  }<br>}<br>但是会在scanner2.nextLine()调用时抛出异常<br>java.util.NoSuchElementException: No line found</p>
-<p>原因<br>下面是scanner的源码</p>
-<p>// The input source<br>    private Readable source;<br>public void close() {<br>        if (closed)<br>            return;<br>        if (source instanceof Closeable) {<br>            try {<br>                ((Closeable)source).close();<br>            } catch (IOException ioe) {<br>                lastException = ioe;<br>            }<br>        }<br>        sourceClosed = true;<br>        source = null;<br>        closed = true;<br>    }<br>所以调用close方法并不仅仅关闭scanner类，同时关闭了初始化时作为参数传入的Readable对象。<br>在示例代码中scanner1.close();关闭了System.in，所以虽然初始化scanner2没有问题，但是readLine()会报错。</p>
-<p>是否可以通过重新开启System.in的方式补救呢？<br>遗憾的是，至少作为java的使用者来说是不可以的，除非我们能控制jvm运行。<br>这涉及到System.in是如何开启的，简单来说因为System.in是特殊的系统资源，由jvm负责开启,无法通过java代码重新初始化System.in。<br>如果查看System.in的代码我们就能发现它通过native方法实现初始化，在native方法中将控制台或文件句柄传输给System.in来完成。<br>同样的,Systerm.out System.err也是无法重新被开启的资源，对于它们，close方法应该被谨慎的调用。<br>（ps：实际上有什么原因关闭呢？）</p>
-<p>让我们把问题拓展开来<br>实际上，所有的能够以System.in/out/err为构造器参数的包装器类的close方法都应该被考虑，<br>可以看到jdk的设计者并没有区别对待普通的流和System.in/out/err，<br>而包装器类的close方法关闭底层流对于普通流来说是很合理的，因此我们可以推测事实上其他的包装器的close方法也可能导致关闭System.in/out/err。<br>常用的bufferinputstream就是如此。</p>
-<p>jdk7引入的带资源的try语法糖产生隐蔽的问题<br>jdk7引入的带资源的try语法糖隐式的帮助程序员调用close方法,<br>遗憾的是该方法也会产生上述问题，甚至更难被发现。</p>
-<p>我们有必要积极的关闭不再需要的流嘛？如何对待io.close?如何预防该问题？<br>从性能的角度来说，积极关闭流是必须的，实际上如果我们使用findbugs等代码规范工具，能发现关闭io是被强烈推荐的。<br>如果你使用idea的话，建议在close之前，使用快捷键ctrl+b进入close方法的源代码来查看其关闭机制。这种方法非常简便，当然eclipse应该也有插件可以实现类似功能。<br>我们也可以通过包装System.in/out/err来安全的使用它们，实际上利用装饰器模式，覆盖System.in/out/err的close方法即可。</p>
-
-          
+          scanner错误关闭导致的异常public class test2 {
+  public static void main(String[] args) {    Scanner scanner1 = new Scanner(System.in);    System.out.println(“r
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/07/03/Scanner分析/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
