@@ -5,14 +5,21 @@
   
 
 
-<html class="theme-next muse use-motion" lang="zh-Hans">
+<html class="theme-next mist use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-<meta name="theme-color" content="#222">
+<meta name="theme-color" content="#fff">
 
 
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
 
 
 
@@ -47,6 +54,32 @@
 
 
 
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
 
 
 
@@ -55,22 +88,16 @@
 <link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
-
 
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
 
 
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
 
 
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="scanner,底层," />
 
 
 
@@ -82,14 +109,14 @@
 
 
 <meta name="description" content="scanner错误关闭导致的异常public class test2 {   public static void main(String[] args) {    Scanner scanner1 = new Scanner(System.in);    System.out.println(“run scanner1.close()”);    scanner1.close(); Scanne">
-<meta name="keywords" content="java c">
+<meta name="keywords" content="scanner,底层">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Scanner分析">
 <meta property="og:url" content="https://arrogantl.github.io/2018/07/03/Scanner分析/index.html">
 <meta property="og:site_name" content="ArrogantL">
 <meta property="og:description" content="scanner错误关闭导致的异常public class test2 {   public static void main(String[] args) {    Scanner scanner1 = new Scanner(System.in);    System.out.println(“run scanner1.close()”);    scanner1.close(); Scanne">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-03T13:34:59.954Z">
+<meta property="og:updated_time" content="2018-07-06T12:32:40.229Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Scanner分析">
 <meta name="twitter:description" content="scanner错误关闭导致的异常public class test2 {   public static void main(String[] args) {    Scanner scanner1 = new Scanner(System.in);    System.out.println(“run scanner1.close()”);    scanner1.close(); Scanne">
@@ -100,12 +127,12 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Muse',
+    scheme: 'Mist',
     version: '5.1.4',
     sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
     fancybox: true,
     tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    motion: {"enable":true,"async":true,"transition":{"post_block":"perspectiveLeftIn","post_header":"fadeIn","post_body":"fadeIn","coll_header":"perspectiveLeftIn","sidebar":"slideUpIn"}},
     duoshuo: {
       userId: '0',
       author: '博主'
@@ -144,12 +171,24 @@
 
   
   
+  
+  
+  
     
   
 
   <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
+	
+	
+	
+	<a href="https://github.com/ArrogantL"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png" alt="Fork me on GitHub"></a>
+	
+	
+	
+	
+	
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta ">
@@ -163,7 +202,7 @@
       </a>
     </div>
       
-        <h1 class="site-subtitle" itemprop="description">欲度关山，何惧狂澜；风生水起，正好扬帆。</h1>
+        <p class="site-subtitle">欲度关山，何惧狂澜；风生水起，正好扬帆。</p>
       
   </div>
 
@@ -316,7 +355,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">Scanner分析</h2>
+          <h1 class="post-title" itemprop="name headline">Scanner分析</h1>
         
 
         <div class="post-meta">
@@ -339,6 +378,39 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/内存模型/" itemprop="url" rel="index">
+                    <span itemprop="name">内存模型</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -354,6 +426,37 @@
             </span>
           
 
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  733
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  3
+                </span>
+              
+            </div>
           
 
           
@@ -395,8 +498,34 @@ scanner2.nextLine();
     
 
     
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    ArrogantL
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://arrogantl.github.io/2018/07/03/Scanner分析/" title="Scanner分析">https://arrogantl.github.io/2018/07/03/Scanner分析/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/scanner/" rel="tag"><i class="fa fa-tag"></i> scanner</a>
+          
+            <a href="/tags/底层/" rel="tag"><i class="fa fa-tag"></i> 底层</a>
+          
+        </div>
       
 
       
@@ -418,6 +547,22 @@ scanner2.nextLine();
       
       
 
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/06/String到底在内存中是如何存储的/" rel="prev" title="String到底在内存中是如何存储的">
+                String到底在内存中是如何存储的 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
       
 
       
@@ -489,14 +634,32 @@ scanner2.nextLine();
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
 
             
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
 
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
             
 
           </nav>
@@ -509,7 +672,13 @@ scanner2.nextLine();
                   <span class="links-of-author-item">
                     <a href="https://github.com/ArrogantL" target="_blank" title="GitHub">
                       
-                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="arrogant262@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i></a>
                   </span>
                 
             </div>
@@ -517,18 +686,11 @@ scanner2.nextLine();
 
           
           
-            <div class="cc-license motion-element" itemprop="license">
-              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
-                <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
-              </a>
-            </div>
-          
 
           
           
 
           
-
         </div>
       </section>
 
@@ -552,6 +714,15 @@ scanner2.nextLine();
   </span>
   <span class="author" itemprop="copyrightHolder">ArrogantL</span>
 
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">1.8k</span>
   
 </div>
 
