@@ -99,7 +99,7 @@
 
 
 
-  <meta name="keywords" content="scanner,底层," />
+  <meta name="keywords" content="包装类型," />
 
 
 
@@ -110,18 +110,18 @@
 
 
 
-<meta name="description" content="scanner错误关闭导致的异常public class test2 {   public static void main(String[] args) {    Scanner scanner1 = new Scanner(System.in);    System.out.println(“run scanner1.close()”);    scanner1.close(); Scanne">
-<meta name="keywords" content="scanner,底层">
+<meta name="description" content="String会出现在哪些地方方法内的局部string类内的字段Stringstatic string容器中存储的stringString数组那么String的位置会影响其存储方式吗？显然是不会的，类永远只会储存在堆上。但是实际上类的字段并不是一直在堆上的。String的构造方法以下来自String类 源码，一些无关紧要的实现被我省略了：  private final char value[];">
+<meta name="keywords" content="包装类型">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Scanner分析">
-<meta property="og:url" content="https://arrogantl.top/2018/07/03/Scanner分析/index.html">
+<meta property="og:title" content="String到底在内存中是如何存储的">
+<meta property="og:url" content="https://arrogantl.top/String到底在内存中是如何存储的/index.html">
 <meta property="og:site_name" content="ArrogantL">
-<meta property="og:description" content="scanner错误关闭导致的异常public class test2 {   public static void main(String[] args) {    Scanner scanner1 = new Scanner(System.in);    System.out.println(“run scanner1.close()”);    scanner1.close(); Scanne">
+<meta property="og:description" content="String会出现在哪些地方方法内的局部string类内的字段Stringstatic string容器中存储的stringString数组那么String的位置会影响其存储方式吗？显然是不会的，类永远只会储存在堆上。但是实际上类的字段并不是一直在堆上的。String的构造方法以下来自String类 源码，一些无关紧要的实现被我省略了：  private final char value[];">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-06T12:32:40.229Z">
+<meta property="og:updated_time" content="2018-07-06T12:36:34.505Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Scanner分析">
-<meta name="twitter:description" content="scanner错误关闭导致的异常public class test2 {   public static void main(String[] args) {    Scanner scanner1 = new Scanner(System.in);    System.out.println(“run scanner1.close()”);    scanner1.close(); Scanne">
+<meta name="twitter:title" content="String到底在内存中是如何存储的">
+<meta name="twitter:description" content="String会出现在哪些地方方法内的局部string类内的字段Stringstatic string容器中存储的stringString数组那么String的位置会影响其存储方式吗？显然是不会的，类永远只会储存在堆上。但是实际上类的字段并不是一直在堆上的。String的构造方法以下来自String类 源码，一些无关紧要的实现被我省略了：  private final char value[];">
 
 
 
@@ -151,13 +151,13 @@
 
 
 
-  <link rel="canonical" href="https://arrogantl.top/2018/07/03/Scanner分析/"/>
+  <link rel="canonical" href="https://arrogantl.top/String到底在内存中是如何存储的/"/>
 
 
 
 
 
-  <title>Scanner分析 | ArrogantL</title>
+  <title>String到底在内存中是如何存储的 | ArrogantL</title>
   
 
 
@@ -340,7 +340,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://arrogantl.top/2018/07/03/Scanner分析/">
+    <link itemprop="mainEntityOfPage" href="https://arrogantl.top/String到底在内存中是如何存储的/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="ArrogantL">
@@ -357,7 +357,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Scanner分析</h1>
+          <h1 class="post-title" itemprop="name headline">String到底在内存中是如何存储的</h1>
         
 
         <div class="post-meta">
@@ -369,8 +369,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-03T21:34:23+08:00">
-                2018-07-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-06T19:18:21+08:00">
+                2018-07-06
               </time>
             
 
@@ -439,7 +439,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  733
+                  1,079
                 </span>
               
 
@@ -455,7 +455,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  3
+                  4
                 </span>
               
             </div>
@@ -476,18 +476,20 @@
       
 
       
-        <p>scanner错误关闭导致的异常<br>public class test2 {</p>
-<p>  public static void main(String[] args) {<br>    Scanner scanner1 = new Scanner(System.in);<br>    System.out.println(“run scanner1.close()”);<br>    scanner1.close();</p>
-<pre><code>Scanner scanner2 = new Scanner(System.in);
-System.out.println(&quot;run scanner2.nextLine()&quot;);
-scanner2.nextLine();
-</code></pre><p>  }<br>}<br>但是会在scanner2.nextLine()调用时抛出异常<br>java.util.NoSuchElementException: No line found</p>
-<p>原因<br>下面是scanner的源码</p>
-<p>// The input source<br>    private Readable source;<br>public void close() {<br>        if (closed)<br>            return;<br>        if (source instanceof Closeable) {<br>            try {<br>                ((Closeable)source).close();<br>            } catch (IOException ioe) {<br>                lastException = ioe;<br>            }<br>        }<br>        sourceClosed = true;<br>        source = null;<br>        closed = true;<br>    }<br>所以调用close方法并不仅仅关闭scanner类，同时关闭了初始化时作为参数传入的Readable对象。<br>在示例代码中scanner1.close();关闭了System.in，所以虽然初始化scanner2没有问题，但是readLine()会报错。</p>
-<p>是否可以通过重新开启System.in的方式补救呢？<br>遗憾的是，至少作为java的使用者来说是不可以的，除非我们能控制jvm运行。<br>这涉及到System.in是如何开启的，简单来说因为System.in是特殊的系统资源，由jvm负责开启,无法通过java代码重新初始化System.in。<br>如果查看System.in的代码我们就能发现它通过native方法实现初始化，在native方法中将控制台或文件句柄传输给System.in来完成。<br>同样的,Systerm.out System.err也是无法重新被开启的资源，对于它们，close方法应该被谨慎的调用。<br>（ps：实际上有什么原因关闭呢？）</p>
-<p>让我们把问题拓展开来<br>实际上，所有的能够以System.in/out/err为构造器参数的包装器类的close方法都应该被考虑，<br>可以看到jdk的设计者并没有区别对待普通的流和System.in/out/err，<br>而包装器类的close方法关闭底层流对于普通流来说是很合理的，因此我们可以推测事实上其他的包装器的close方法也可能导致关闭System.in/out/err。<br>常用的bufferinputstream就是如此。</p>
-<p>jdk7引入的带资源的try语法糖产生隐蔽的问题<br>jdk7引入的带资源的try语法糖隐式的帮助程序员调用close方法,<br>遗憾的是该方法也会产生上述问题，甚至更难被发现。</p>
-<p>我们有必要积极的关闭不再需要的流嘛？如何对待io.close?如何预防该问题？<br>从性能的角度来说，积极关闭流是必须的，实际上如果我们使用findbugs等代码规范工具，能发现关闭io是被强烈推荐的。<br>如果你使用idea的话，建议在close之前，使用快捷键ctrl+b进入close方法的源代码来查看其关闭机制。这种方法非常简便，当然eclipse应该也有插件可以实现类似功能。<br>我们也可以通过包装System.in/out/err来安全的使用它们，实际上利用装饰器模式，覆盖System.in/out/err的close方法即可。</p>
+        <p>String会出现在哪些地方<br>方法内的局部string<br>类内的字段String<br>static string<br>容器中存储的string<br>String数组<br>那么String的位置会影响其存储方式吗？<br>显然是不会的，类永远只会储存在堆上。<br>但是实际上类的字段并不是一直在堆上的。<br>String的构造方法<br>以下来自String类 源码，一些无关紧要的实现被我省略了：</p>
+<p> private final char value[];<br>    private int hash; // Default to 0<br>    private static final long serialVersionUID = -6849794470754667710L;<br>    private static final ObjectStreamField[] serialPersistentFields =<br>        new ObjectStreamField[0];<br>   public String() {<br>        this.value = “”.value;<br>    }<br>  public String(String original) {<br>        this.value = original.value;//底层char[]指向了同一位置！<br>        this.hash = original.hash;<br>    }<br>    public String(char value[]) {<br>        this.value = Arrays.copyOf(value, value.length);//底层char[]指向不同位置！下面的截取也是如此<br>    }<br>    public String(char value[], int offset, int count) { … }</p>
+<pre><code>public String(int[] codePoints, int offset, int count) {...}
+
+public String(byte ascii[], int hibyte, int offset, int count) {...}
+
+public String(byte ascii[], int hibyte) {...}
+</code></pre><p>我们可以发现String的构造器并不关注是否将char[]指向同一位置，之所以有一些没有指向同一位置完全是为了保证char[]是immutable的。<br>这并不能说明调用构造器构造的String的内存位置有什么特别之处。</p>
+<p>String另一种构造方式–为包装类型提供的专有构造方式<br>运行如下代码：</p>
+<p>class StringPointerTest{<br>    String g=”gh”,h=”gh”;<br>}<br>public class StringTest {<br>    public static void main(String[] args) {<br>        String a=”abc”;<br>        String b=”abc”;<br>        System.out.println(a==b);//true使用简写的构造能够复用创建的string类<br>        String c=new String(“abc”);<br>        System.out.println(a==c);//false是用构造器则不能<br>        String d=new String(“def”);<br>        String e=”def”；<br>        System.out.println(d==e);//false即使先构造器再使用简化构造也不行。<br>        StringPointerTest spt=new StringPointerTest();<br>        System.out.println(spt.g==spt.h); //true与String的属于方法局部变量还是类字段也无关<br>    }<br>}<br>class IntegerPointTest1{<br>    Integer a=1;</p>
+<p>}<br>class IntegerPointTest2{<br>    Integer b=1;<br>}<br>public class IntegerTest {<br>    public static void main(String[] args) {<br>       System.out.println(new IntegerPointTest1().a==new IntegerPointTest2().b);//true!<br>    }<br>}<br>原理<br>需要存储的代码元素有：</p>
+<p>Class类文件<br>方法，类的所以实例应该共用一段方法<br>static字段<br>字符串常量<br>值常量<br>类实例<br>各种引用<br>基本变量<br>他们各自有各自的存储位置，方法内的引用存在方法栈，类内的引用存在堆，类存储在堆上，方法中的局部基本变量存于栈但是类字段的基本变量存在堆上（方法区内）。<br>值得一提的是方法区（又叫静态区），其存储值常量、字符串常量、方法、静态字段、.class文件，等只用一个备份的数据。<br>栈和方法区都有共享数据的功能。<br>因此使用简化方法构造String类的时候，在方法内和类内会将字符串存于栈/方法区，这无关紧要，重要的是，<br>使用这种构造方法，如果没有所构造的字符串常量存在于内存中，那么会在栈/方法区中存上一份，然后再堆中新建一个String类，把String类的char[]引用指向在栈/方法区中的字符串常量；<br>如果所构造的字符串常量已经存在于内存中，那么则会检索关联与之对应的堆中String实例，并直接使用这个String类实例。<br>只有使用简化方法构造才能被栈/方法区记录下来，如果使用new则不行，这也是为什么上例即使先new，再使用简化构造相同字符串也不会引用相同。<br>因为new出来的String实例的字符串常量存储在堆上，和栈/方法区无关。<br>拓展到所有包装类型—可以吗？<br>完全不可以。<br>他们都没有像String那样实现缓存。<br>但是实现了类似的缓存，它们的自动包装机制也提供缓存功能，<br>但是是基于valueof方法的，该方法会对一定范围内进行缓存。<br>而且实现方式非常暴力,是在对应类里存一个静态的类数组，并静态初始化全部填充。</p>
+<p>可以缓存的范围：<br>byte Byte -128–127<br>short Short -128–127<br>int Integer -128—127<br>long Long -128—127<br>char Character 0–127<br>boolean Boolean TURE，FALSE<br>String<br>不缓存的：<br>float Float<br>double Double</p>
+<p>可见不是所有的自动包装机制都实现了全缓存。</p>
 
       
     </div>
@@ -508,7 +510,7 @@ scanner2.nextLine();
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://arrogantl.top/2018/07/03/Scanner分析/" title="Scanner分析">https://arrogantl.top/2018/07/03/Scanner分析/</a>
+    <a href="https://arrogantl.top/String到底在内存中是如何存储的/" title="String到底在内存中是如何存储的">https://arrogantl.top/String到底在内存中是如何存储的/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -523,9 +525,7 @@ scanner2.nextLine();
       
         <div class="post-tags">
           
-            <a href="/tags/scanner/" rel="tag"><i class="fa fa-tag"></i> scanner</a>
-          
-            <a href="/tags/底层/" rel="tag"><i class="fa fa-tag"></i> 底层</a>
+            <a href="/tags/包装类型/" rel="tag"><i class="fa fa-tag"></i> 包装类型</a>
           
         </div>
       
@@ -553,15 +553,15 @@ scanner2.nextLine();
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/Scanner分析/" rel="next" title="Scanner分析">
+                <i class="fa fa-chevron-left"></i> Scanner分析
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/07/06/String到底在内存中是如何存储的/" rel="prev" title="String到底在内存中是如何存储的">
-                String到底在内存中是如何存储的 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
